@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>About Now what?</title>
+<meta name="description" content="Now what? helps first-time buyers furnish their home, plan their costs and keep track of fixes, all in one calm, simple app.">
+<meta name="theme-color" content="#F7F6FB">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F7F6FB; --surface:#FFFFFF; --ink:#2A2240; --ink-2:#635B78; --line:#E4E0EE;
+  --plum:#5A3E8E; --lilac:#E5DBFA; --peach:#FFD8C2; --mint:#C9EDD8; --butter:#FFEDA8; --sky:#CFE3F8;
+  --display:'Bricolage Grotesque', system-ui, sans-serif;
+  --body:'Atkinson Hyperlegible', system-ui, sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.55;-webkit-text-size-adjust:100%}
+a{color:var(--plum)}
+:focus-visible{outline:3px solid var(--plum);outline-offset:3px;border-radius:6px}
+h1,h2,h3{font-family:var(--display);letter-spacing:-.025em;margin:0;line-height:1.05}
+p{margin:0}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+
+/* Top bar */
+.top{display:flex;justify-content:space-between;align-items:center;padding:18px 20px;max-width:1080px;margin:0 auto}
+.logo{display:flex;align-items:center;gap:8px;font-family:var(--display);font-weight:800;font-size:20px;text-decoration:none;color:var(--ink)}
+.logo svg{width:26px;height:26px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 22px;border-radius:999px;background:var(--plum);color:#fff;font-weight:700;text-decoration:none}
+.btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
+.top .btn{min-height:42px;padding:0 18px;font-size:16px}
+
+/* Hero */
+.hero{display:grid;gap:40px;padding:24px 0 72px;align-items:center}
+.door{position:relative;border-radius:260px 260px 32px 32px;background:var(--peach);padding:88px 28px 36px}
+.door .knob{position:absolute;right:28px;top:60%;width:14px;height:14px;border-radius:50%;background:var(--ink);opacity:.85}
+.youre{font-family:var(--display);font-weight:700;font-size:26px;margin-bottom:4px}
+.big{font-family:var(--display);font-weight:800;font-size:clamp(76px,20vw,150px);line-height:.86;letter-spacing:-.05em;margin:0 0 24px}
+.hero .lead{font-size:20px;max-width:30ch;margin-bottom:24px}
+.hero .ctas{display:flex;gap:12px;flex-wrap:wrap}
+
+/* Phone */
+.phone-col{display:flex;flex-direction:column;align-items:center;gap:12px}
+.phone{width:min(340px,100%);aspect-ratio:9/19;border-radius:44px;background:var(--ink);padding:12px;box-shadow:0 30px 60px -30px rgba(42,34,64,.45)}
+.phone iframe{width:100%;height:100%;border:0;border-radius:34px;background:var(--bg);display:block}
+.phone-note{font-size:15px;color:var(--ink-2);text-align:center}
+
+/* Sections */
+section.block{padding:64px 0;border-top:1px solid var(--line)}
+.kicker{font-size:16px;color:var(--ink-2);margin-bottom:8px}
+h2{font-size:clamp(34px,6vw,52px);font-weight:800;max-width:18ch;margin-bottom:18px}
+.intro{font-size:20px;max-width:46ch;color:var(--ink-2)}
+
+/* Problem */
+.scatter{display:grid;gap:14px;margin-top:32px}
+.scrap{background:var(--surface);border-radius:18px;padding:18px 20px;box-shadow:0 0 0 1px var(--line)}
+.scrap h3{font-size:20px;margin-bottom:4px}
+.scrap p{color:var(--ink-2)}
+
+/* Wow */
+.wow{display:grid;gap:32px;margin-top:32px;align-items:start}
+.pot{background:var(--butter);border-radius:24px;padding:22px 22px 18px}
+.pot .amt{font-family:var(--display);font-weight:800;font-size:44px;line-height:1;letter-spacing:-.03em;margin:4px 0}
+.queue{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:10px}
+.queue li{background:var(--surface);border-radius:16px;padding:12px 14px;display:grid;grid-template-columns:28px 1fr auto;gap:12px;align-items:center}
+.queue .n{font-family:var(--display);font-weight:800;font-size:20px;color:var(--ink-2);text-align:center}
+.queue .nm{font-weight:700;line-height:1.25}
+.queue .pr{font-size:15px;color:var(--ink-2)}
+.tag{font-size:14px;font-weight:700;border-radius:999px;padding:4px 12px;white-space:nowrap}
+.t-now{background:var(--mint)}
+.t-later{background:var(--butter);box-shadow:inset 0 0 0 1.5px rgba(42,34,64,.15)}
+.why p+p{margin-top:14px}
+.why strong{font-family:var(--display)}
+
+/* Tabs */
+.tabs{display:grid;gap:16px;margin-top:32px}
+.tabcard{border-radius:24px;padding:24px}
+.tabcard h3{font-size:28px;margin-bottom:6px}
+.tabcard p{margin-bottom:14px}
+.tabcard ul{margin:0;padding-left:20px}
+.tabcard li+li{margin-top:4px}
+
+/* Principles */
+.principles{display:grid;gap:28px;margin-top:32px}
+.principle h3{font-size:22px;margin-bottom:6px}
+.principle p{color:var(--ink-2)}
+
+/* Next */
+.next{display:grid;gap:12px;margin-top:28px;padding:0;list-style:none}
+.next li{background:var(--surface);border-radius:16px;padding:14px 18px;box-shadow:0 0 0 1px var(--line)}
+.next strong{display:block}
+.next span{color:var(--ink-2);font-size:16px}
+
+/* Closing */
+.closing{background:var(--lilac);border-radius:32px;padding:48px 28px;text-align:center;margin:64px 0 40px}
+.closing h2{margin:0 auto 14px}
+.closing p{max-width:40ch;margin:0 auto 24px}
+footer{padding:0 0 48px;font-size:15px;color:var(--ink-2)}
+footer p+p{margin-top:6px}
+
+@media (min-width:860px){
+  .hero{grid-template-columns:1.2fr 1fr;padding-top:40px}
+  .scatter{grid-template-columns:repeat(4,1fr)}
+  .wow{grid-template-columns:1fr 1fr}
+  .tabs{grid-template-columns:1fr 1fr}
+  .principles{grid-template-columns:repeat(2,1fr);column-gap:48px}
+  .next{grid-template-columns:1fr 1fr}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <a class="logo" href="./" aria-label="Now what? Open the app">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M6 28V14a10 10 0 0 1 20 0v14z" fill="#FFD8C2" stroke="#2A2240" stroke-width="2.2" stroke-linejoin="round"/><circle cx="21" cy="20" r="1.8" fill="#2A2240"/></svg>
+    Now what?
+  </a>
+  <a class="btn" href="./">Open the app</a>
+</header>
+
+<main>
+  <div class="wrap">
+    <section class="hero" aria-labelledby="title">
+      <div class="door">
+        <span class="knob" aria-hidden="true"></span>
+        <p class="youre">You’re in.</p>
+        <h1 id="title" class="big">Now what?</h1>
+        <p class="lead">A calm, simple app for first-time buyers. Plan your rooms, see when you can afford each piece, and keep every fix in one place.</p>
+        <div class="ctas">
+          <a class="btn" href="./">Try it on your phone</a>
+          <a class="btn ghost" href="#how">See how it works</a>
+        </div>
+      </div>
+      <div class="phone-col">
+        <div class="phone"><iframe src="index.html" title="The Now what? app, live and ready to try" loading="lazy"></iframe></div>
+        <p class="phone-note">This is the real app. Tap around.</p>
+      </div>
+    </section>
+  </div>
+
+  <section class="block" aria-labelledby="problem">
+    <div class="wrap">
+      <p class="kicker">The problem</p>
+      <h2 id="problem">You get the keys, and the to-do list explodes.</h2>
+      <p class="intro">Bills, budgets, repairs and furnishing all land at once. First-time buyers end up running their new home across a mess of tools that were never meant to work together.</p>
+      <div class="scatter">
+        <div class="scrap"><h3>Notes app</h3><p>Endless lists of things to fix, sort and buy.</p></div>
+        <div class="scrap"><h3>Spreadsheets</h3><p>Budgets built from scratch, with guessed figures.</p></div>
+        <div class="scrap"><h3>Browser tabs</h3><p>A tab group per room, lost when Safari crashes.</p></div>
+        <div class="scrap"><h3>Checkout finance</h3><p>Pay-later offers, when cheaper ways to pay aren’t obvious.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="how" aria-labelledby="wow">
+    <div class="wrap">
+      <p class="kicker">The big idea</p>
+      <h2 id="wow">See when you can afford each thing.</h2>
+      <p class="intro">Budget spreadsheets are everywhere. What’s missing is the link between what you want and the money you’re putting aside for it.</p>
+      <div class="wow">
+        <div class="pot" aria-label="Example furniture pot">
+          <div class="small">Furniture pot</div>
+          <div class="amt">£100</div>
+          <div>+ £200 a month</div>
+          <ol class="queue">
+            <li><span class="n">1</span><div><div class="nm">Marble wall shelf</div><div class="pr">£53.95</div></div><span class="tag t-now">Ready now</span></li>
+            <li><span class="n">2</span><div><div class="nm">Glass incense holder</div><div class="pr">£25</div></div><span class="tag t-now">Ready now</span></li>
+            <li><span class="n">3</span><div><div class="nm">Arched wooden mirror</div><div class="pr">£289</div></div><span class="tag t-later">In 2 months</span></li>
+            <li><span class="n">4</span><div><div class="nm">Teddy pouffe</div><div class="pr">£179</div></div><span class="tag t-later">In 3 months</span></li>
+          </ol>
+        </div>
+        <div class="why">
+          <p><strong>You rank what you want.</strong> Your pot pays for things in that order, one at a time.</p>
+          <p><strong>The dates work themselves out.</strong> Every item shows when it’s ready, based on what’s in your pot and what you add each month. Reorder the list and the dates change instantly.</p>
+          <p><strong>Need it sooner?</strong> “Find me a way to get this now” shows interest-free options only: save a little more each month, use a 0% card wisely, or add it to your gift list for friends and family.</p>
+          <p><strong>You stay in control.</strong> Nothing moves money automatically. When you buy something, you mark it as bought and it comes out of your pot.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" aria-labelledby="inside">
+    <div class="wrap">
+      <p class="kicker">What’s inside</p>
+      <h2 id="inside">Four tabs, one calm place.</h2>
+      <p class="intro">It opens on a big, friendly welcome. Pick what’s next for you, then move around with four tabs at the bottom of the screen.</p>
+      <div class="tabs">
+        <article class="tabcard" style="background:var(--peach)">
+          <h3>Rooms</h3>
+          <p>A moodboard for every room, so you can see it coming together.</p>
+          <ul><li>Paste a link, add a price and a photo</li><li>Tap through to the shop any time</li><li>No more lost tabs</li></ul>
+        </article>
+        <article class="tabcard" style="background:var(--mint)">
+          <h3>Purchases</h3>
+          <p>Everything you want, in the order you want it.</p>
+          <ul><li>A ready date for every item</li><li>A gift list you can filter by price</li><li>Share it to WhatsApp in one tap</li></ul>
+        </article>
+        <article class="tabcard" style="background:var(--butter)">
+          <h3>Budget</h3>
+          <p>What comes in, what goes out, and what’s left.</p>
+          <ul><li>Typical costs for a two-bed flat to start from</li><li>Mark each bill as an estimate or actual</li><li>Choose what goes in your furniture pot</li></ul>
+        </article>
+        <article class="tabcard" style="background:var(--sky)">
+          <h3>Fixes</h3>
+          <p>Chips, leaks and paint jobs, all in one list.</p>
+          <ul><li>Jobs by room, plus a general list</li><li>Mark each one as to do, reported or done</li><li>Share outstanding fixes with your management company</li></ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" aria-labelledby="principles">
+    <div class="wrap">
+      <p class="kicker">How it’s designed</p>
+      <h2 id="principles">Warm, clear, and on your side.</h2>
+      <div class="principles">
+        <div class="principle"><h3>Plain language first</h3><p>Short sentences and everyday words. Clear matters more than clever, and nobody gets talked down to.</p></div>
+        <div class="principle"><h3>Private by default</h3><p>Everything stays on your phone. No accounts, no sign-ups, nothing shared.</p></div>
+        <div class="principle"><h3>Guidance, not sales</h3><p>No bank or retailer behind it. It never names credit products or pushes you to borrow.</p></div>
+        <div class="principle"><h3>Made for one hand</h3><p>Designed for a phone first, with big tap targets and soft pastel colours.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" aria-labelledby="who">
+    <div class="wrap">
+      <p class="kicker">Who it’s for, and what’s next</p>
+      <h2 id="who">Built for first-time buyers in England.</h2>
+      <p class="intro">This first version is for one person managing all their own bills in the first months after moving in. Here’s what could come next.</p>
+      <ul class="next">
+        <li><strong>Find the cheapest providers</strong><span>Spot bills you’re paying too much for, with a hand-off to switch.</span></li>
+        <li><strong>Add items from a link</strong><span>Fill in the name, price and photo automatically from the shop.</span></li>
+        <li><strong>Couples and joint buyers</strong><span>Two incomes, with bills split however suits you.</span></li>
+        <li><strong>Price-drop alerts</strong><span>A nudge when something on your list goes on sale.</span></li>
+        <li><strong>Month-by-month guidance</strong><span>“Month two. Now what?” based on your move-in date.</span></li>
+        <li><strong>Warranty reminders</strong><span>A heads-up before a new-build defects period ends.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <section class="closing" aria-labelledby="try">
+      <h2 id="try">You’re in. Let’s sort the rest.</h2>
+      <p>Open it on your phone and add it to your home screen. It’s ready to try with example rooms and costs.</p>
+      <a class="btn" href="./">Open Now what?</a>
+    </section>
+    <footer>
+      <p>Made at a hack day, October 2026.</p>
+      <p>Now what? gives general information, not financial advice. For free, impartial help, visit <a href="https://www.moneyhelper.org.uk" target="_blank" rel="noopener">MoneyHelper</a>.</p>
+    </footer>
+  </div>
+</main>
+</body>
+</html>

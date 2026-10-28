@@ -35,6 +35,8 @@ p{margin:0}
 /* Hero */
 .hero{display:grid;gap:40px;padding:24px 0 72px;align-items:center}
 .door{position:relative;border-radius:260px 260px 32px 32px;background:var(--peach);padding:88px 28px 36px}
+.door .handle{position:absolute;right:14px;top:58%;width:64px;height:38px}
+.door .handle svg{width:100%;height:100%;display:block}
 .door .knob{position:absolute;right:28px;top:60%;width:14px;height:14px;border-radius:50%;background:var(--ink);opacity:.85}
 .youre{font-family:var(--display);font-weight:700;font-size:26px;margin-bottom:4px}
 .big{font-family:var(--display);font-weight:800;font-size:clamp(76px,20vw,150px);line-height:.86;letter-spacing:-.05em;margin:0 0 24px}
@@ -125,6 +127,7 @@ footer p+p{margin-top:6px}
   <div class="wrap">
     <section class="hero" aria-labelledby="title">
       <div class="door">
+      <span class="handle" aria-hidden="true"><svg viewBox="0 0 48 28"><rect x="33" y="2" width="12" height="24" rx="6" fill="#2A2240" opacity=".25"/><circle cx="39" cy="10" r="6" fill="#2A2240"/><rect x="6" y="6.5" width="34" height="7" rx="3.5" fill="#2A2240"/></svg></span>
         <p class="youre">You’re in.</p>
         <h1 id="title" class="big">Now what?</h1>
         <p class="lead">A calm, simple app for first-time buyers. Plan your rooms, see when you can afford each piece, and keep every fix in one place.</p>

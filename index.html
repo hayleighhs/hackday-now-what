@@ -45,6 +45,8 @@ h3{font-size:18px;line-height:1.25;font-weight:700}
 /* Home */
 .home{padding-top:8px}
 .door{position:relative;border-radius:220px 220px var(--r-lg) var(--r-lg);background:var(--door,var(--peach));padding:72px 24px 28px;margin-top:8px;transition:background-color .5s ease}
+.door .handle{position:absolute;right:14px;top:58%;width:64px;height:38px}
+.door .handle svg{width:100%;height:100%;display:block}
 .door .knob{position:absolute;right:26px;top:58%;width:14px;height:14px;border-radius:50%;background:var(--ink);opacity:.85}
 .youre-in{font-family:var(--display);font-weight:700;font-size:26px;line-height:1.1;letter-spacing:-.02em;margin:0 0 6px}
 .now-what{font-family:var(--display);font-weight:800;font-size:clamp(76px,24vw,132px);line-height:.88;letter-spacing:-.05em;margin:0 0 28px}
@@ -374,6 +376,7 @@ function viewHome(){
   const n = NEXT[homeIdx];
   return `<section class="home" aria-labelledby="hi">
     <div class="door" style="--door:${n.door}">
+      <span class="handle" aria-hidden="true"><svg viewBox="0 0 48 28"><rect x="33" y="2" width="12" height="24" rx="6" fill="#2A2240" opacity=".25"/><circle cx="39" cy="10" r="6" fill="#2A2240"/><rect x="6" y="6.5" width="34" height="7" rx="3.5" fill="#2A2240"/></svg></span>
       <p class="youre-in">You’re in.</p>
       <h1 id="hi" class="now-what">Now what?</h1>
       <p class="next-title" aria-live="polite">${n.title}</p>

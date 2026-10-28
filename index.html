@@ -1,0 +1,747 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Now what?</title>
+<meta name="description" content="You're in. Now what? Plan your rooms, budget for furniture and keep track of fixes in your first home.">
+<meta name="theme-color" content="#F7F6FB">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F7F6FB; --surface:#FFFFFF; --ink:#2A2240; --ink-2:#635B78; --line:#E4E0EE;
+  --plum:#5A3E8E; --plum-ink:#FFFFFF;
+  --lilac:#E5DBFA; --peach:#FFD8C2; --mint:#C9EDD8; --butter:#FFEDA8; --sky:#CFE3F8;
+  --good:#1F7A4D; --warn:#9A5B00;
+  --display:'Bricolage Grotesque', system-ui, sans-serif;
+  --body:'Atkinson Hyperlegible', system-ui, sans-serif;
+  --r-sm:10px; --r-md:16px; --r-lg:28px;
+  --tabbar:72px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.5;-webkit-text-size-adjust:100%}
+button,input,select{font:inherit;color:inherit}
+a{color:var(--plum)}
+:focus-visible{outline:3px solid var(--plum);outline-offset:2px;border-radius:6px}
+img{display:block;max-width:100%}
+
+.app{max-width:560px;margin:0 auto;min-height:100dvh;padding-bottom:calc(var(--tabbar) + env(safe-area-inset-bottom) + 24px)}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;position:sticky;top:0;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);z-index:5}
+.logo{display:flex;align-items:center;gap:8px;background:none;border:0;padding:4px 0;cursor:pointer;font-family:var(--display);font-weight:800;font-size:20px;letter-spacing:-.02em}
+.logo svg{width:26px;height:26px}
+.topbar .pot-chip{font-size:14px;background:var(--butter);border-radius:999px;padding:4px 12px;border:0;cursor:pointer}
+
+main{padding:4px 20px 0}
+h1,h2,h3{font-family:var(--display);letter-spacing:-.02em;margin:0}
+h1{font-size:34px;line-height:1.1;font-weight:800}
+h2{font-size:22px;line-height:1.2;font-weight:700}
+h3{font-size:18px;line-height:1.25;font-weight:700}
+.lead{color:var(--ink-2);margin:6px 0 20px;max-width:34ch}
+.muted{color:var(--ink-2)}
+.small{font-size:14px}
+
+/* Home */
+.home{padding-top:8px}
+.door{position:relative;border-radius:220px 220px var(--r-lg) var(--r-lg);background:var(--door,var(--peach));padding:72px 24px 28px;margin-top:8px;transition:background-color .5s ease}
+.door .knob{position:absolute;right:26px;top:58%;width:14px;height:14px;border-radius:50%;background:var(--ink);opacity:.85}
+.youre-in{font-family:var(--display);font-weight:700;font-size:26px;line-height:1.1;letter-spacing:-.02em;margin:0 0 6px}
+.now-what{font-family:var(--display);font-weight:800;font-size:clamp(76px,24vw,132px);line-height:.88;letter-spacing:-.05em;margin:0 0 28px}
+.next-label{font-size:15px;color:var(--ink-2);margin:0}
+.next-title{font-family:var(--display);font-weight:700;font-size:30px;line-height:1.1;letter-spacing:-.02em;margin:2px 0 8px}
+.next-desc{margin:0 0 20px;max-width:30ch}
+.switch-link{background:none;border:0;padding:6px 0;margin-top:14px;text-decoration:underline;text-underline-offset:4px;cursor:pointer;font-weight:700;color:var(--ink)}
+.home-foot{margin-top:28px;padding-top:16px;border-top:1px solid var(--line)}
+.text-btn{background:none;border:0;padding:6px 0;color:var(--plum);font-weight:700;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 20px;border-radius:999px;border:0;background:var(--plum);color:var(--plum-ink);font-weight:700;cursor:pointer;text-decoration:none}
+.btn.secondary{background:var(--surface);color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
+.btn.quiet{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
+.btn.block{width:100%}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap}
+.icon-btn{width:40px;height:40px;border-radius:50%;border:0;background:var(--surface);box-shadow:inset 0 0 0 1.5px var(--line);display:inline-grid;place-items:center;cursor:pointer}
+.icon-btn svg{width:18px;height:18px}
+.icon-btn[disabled]{opacity:.35;cursor:default}
+
+/* Section header */
+.page-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin:8px 0 4px}
+.back{display:inline-flex;align-items:center;gap:6px;background:none;border:0;padding:6px 0;margin-bottom:6px;cursor:pointer;color:var(--ink-2);font-weight:700}
+.back svg{width:18px;height:18px}
+
+/* Rooms grid */
+.room-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.room-tile{background:var(--surface);border:0;padding:0;border-radius:var(--r-md);overflow:hidden;text-align:left;cursor:pointer;box-shadow:0 0 0 1px var(--line)}
+.collage{aspect-ratio:1/1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:2px;background:var(--peach)}
+.collage > *{width:100%;height:100%}
+.collage img{object-fit:cover;background:#fff}
+.collage.n1 > *{grid-column:1/3;grid-row:1/3}
+.collage.n2 > *{grid-row:1/3}
+.collage.n3 > :first-child{grid-row:1/3}
+.collage .ph{display:grid;place-items:center}
+.collage .ph svg{width:32px;height:32px;opacity:.5}
+.collage .empty{grid-column:1/3;grid-row:1/3;display:grid;place-items:center}
+.collage .empty svg{width:44px;height:44px;opacity:.55}
+.room-tile .meta{padding:10px 12px 12px}
+.room-tile .meta strong{display:block;font-family:var(--display);font-size:17px}
+
+/* Moodboard */
+.board{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+.card{background:var(--surface);border-radius:var(--r-md);overflow:hidden;box-shadow:0 0 0 1px var(--line);display:flex;flex-direction:column}
+.card button.open{all:unset;cursor:pointer;display:block}
+.card button.open:focus-visible{outline:3px solid var(--plum);outline-offset:-3px}
+.photo{aspect-ratio:4/5;background:var(--peach);position:relative;overflow:hidden}
+.photo img{width:100%;height:100%;object-fit:cover}
+.photo .ph{position:absolute;inset:0;display:grid;place-items:center}
+.photo .ph svg{width:48px;height:48px;opacity:.5}
+.card .body{padding:10px 12px 12px}
+.card .name{font-weight:700;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card .price{font-family:var(--display);font-weight:700;font-size:19px;margin-top:4px}
+.card .shop{font-size:14px;padding:0 12px 12px}
+.badge{display:inline-block;font-size:13px;font-weight:700;border-radius:999px;padding:2px 10px;margin-top:6px}
+.b-now{background:var(--mint)}
+.b-later{background:var(--butter)}
+.b-gift{background:var(--lilac)}
+.b-bought{background:var(--line)}
+
+/* Purchases */
+.pot-card{background:var(--butter);border-radius:var(--r-md);padding:16px;margin:14px 0 18px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.pot-card .big{font-family:var(--display);font-weight:800;font-size:28px;line-height:1}
+.seg{display:flex;background:var(--surface);border-radius:999px;padding:4px;box-shadow:inset 0 0 0 1px var(--line);margin-bottom:16px}
+.seg button{flex:1;border:0;background:none;border-radius:999px;min-height:40px;font-weight:700;cursor:pointer;color:var(--ink-2)}
+.seg button[aria-selected="true"]{background:var(--ink);color:#fff}
+.plist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.prow{display:grid;grid-template-columns:28px 64px 1fr auto;gap:12px;align-items:center;background:var(--surface);border-radius:var(--r-md);padding:10px;box-shadow:0 0 0 1px var(--line)}
+.prow .rank{font-family:var(--display);font-weight:800;font-size:20px;text-align:center;color:var(--ink-2)}
+.prow .thumb{width:64px;height:64px;border-radius:12px;overflow:hidden;background:var(--peach);display:grid;place-items:center}
+.prow .thumb img{width:100%;height:100%;object-fit:cover}
+.prow .thumb svg{width:28px;height:28px;opacity:.5}
+.phs{width:100%;height:100%;display:grid;place-items:center}
+.prow .info{min-width:0;cursor:pointer;background:none;border:0;padding:0;text-align:left}
+.prow .info .n{font-weight:700;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.prow .moves{display:flex;flex-direction:column;gap:6px}
+.prow.gift{grid-template-columns:64px 1fr auto}
+.empty-state{background:var(--surface);border-radius:var(--r-md);padding:24px;text-align:center;box-shadow:0 0 0 1px var(--line)}
+.empty-state p{margin:0 0 14px}
+.filter{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.filter input{width:110px}
+
+/* Forms */
+label.field{display:block;margin-bottom:14px}
+label.field span{display:block;font-weight:700;margin-bottom:6px}
+input[type=text],input[type=url],input[type=number],select,textarea{width:100%;min-height:48px;border-radius:var(--r-sm);border:1.5px solid var(--line);background:var(--surface);padding:10px 12px}
+input:focus,select:focus{border-color:var(--plum);outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--plum) 25%,transparent)}
+.money{position:relative}
+.money::before{content:"£";position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--ink-2)}
+.money input{padding-left:26px}
+.hint{font-size:14px;color:var(--ink-2);margin-top:4px}
+
+/* Budget */
+.left-card{background:var(--surface);border-radius:var(--r-lg);padding:20px;box-shadow:0 0 0 1px var(--line);margin:14px 0}
+.left-card .big{font-family:var(--display);font-weight:800;font-size:44px;line-height:1;letter-spacing:-.03em;margin:4px 0}
+.sum{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed var(--line)}
+.sum:last-child{border-bottom:0}
+.potbox{background:var(--butter);border-radius:var(--r-lg);padding:20px;margin:14px 0}
+.potbox .big{font-family:var(--display);font-weight:800;font-size:40px;line-height:1;letter-spacing:-.03em;margin:4px 0 12px}
+.group{margin-top:22px}
+.group-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+.bill{display:grid;grid-template-columns:1fr 104px auto;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+.bill .bname{font-weight:700;line-height:1.25}
+.bill .bnote{font-size:13px;color:var(--ink-2);line-height:1.3;margin-top:2px}
+.bill .money input{min-height:42px;padding-top:6px;padding-bottom:6px}
+.tag{border:0;border-radius:999px;padding:4px 10px;font-size:13px;font-weight:700;cursor:pointer;min-height:32px}
+.tag.est{background:var(--butter)}
+.tag.act{background:var(--mint)}
+.progress{height:8px;border-radius:999px;background:var(--line);overflow:hidden;margin:8px 0 2px}
+.progress i{display:block;height:100%;background:var(--good);border-radius:999px}
+
+/* Fixes */
+.job{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;background:var(--surface);border-radius:var(--r-md);padding:12px 12px 12px 14px;box-shadow:0 0 0 1px var(--line);margin-bottom:8px}
+.job .t{background:none;border:0;padding:0;text-align:left;cursor:pointer;font-weight:700;line-height:1.3}
+.job .k{font-size:13px;color:var(--ink-2);margin-top:2px}
+.job.done .t{text-decoration:line-through;color:var(--ink-2)}
+.status{border:0;border-radius:999px;padding:6px 12px;font-size:14px;font-weight:700;cursor:pointer;min-height:36px;white-space:nowrap}
+.s-todo{background:var(--sky)}
+.s-reported{background:var(--butter)}
+.s-done{background:var(--mint)}
+.chips{display:flex;gap:8px;margin:12px 0 4px}
+.chip{border:0;border-radius:999px;padding:6px 14px;min-height:36px;font-weight:700;cursor:pointer;background:var(--surface);box-shadow:inset 0 0 0 1.5px var(--line)}
+.chip[aria-pressed="true"]{background:var(--ink);color:#fff;box-shadow:none}
+
+/* Tab bar */
+.tabbar{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom);z-index:10}
+.tabbar nav{max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);height:var(--tabbar)}
+.tab{border:0;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:13px;font-weight:700;color:var(--ink-2);cursor:pointer;position:relative}
+.tab svg{width:24px;height:24px}
+.tab[aria-current="page"]{color:var(--ink)}
+.tab[aria-current="page"]::before{content:"";position:absolute;top:8px;width:44px;height:30px;border-radius:999px;background:var(--tc);z-index:-1}
+.tab[aria-current="page"] svg{position:relative}
+
+/* Sheet */
+.scrim{position:fixed;inset:0;background:rgba(42,34,64,.42);z-index:20;display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:var(--bg);width:100%;max-width:560px;max-height:92dvh;overflow:auto;border-radius:var(--r-lg) var(--r-lg) 0 0;padding:10px 20px calc(24px + env(safe-area-inset-bottom));animation:up .22s ease-out}
+.sheet .grab{width:44px;height:5px;border-radius:999px;background:var(--line);margin:0 auto 12px}
+.sheet-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px}
+.sheet .hero-img{border-radius:var(--r-md);overflow:hidden;aspect-ratio:4/3;background:var(--peach);margin-bottom:14px;position:relative}
+.sheet .hero-img img{width:100%;height:100%;object-fit:cover}
+.way{background:var(--surface);border-radius:var(--r-md);padding:16px;box-shadow:0 0 0 1px var(--line);margin-bottom:12px}
+.way h3{margin-bottom:6px}
+.way p{margin:0 0 10px}
+.way .result{font-family:var(--display);font-weight:700;font-size:22px;line-height:1.2;margin:8px 0}
+input[type=range]{width:100%;accent-color:var(--plum);min-height:32px}
+@keyframes up{from{transform:translateY(24px);opacity:.4}to{transform:none;opacity:1}}
+
+/* Toast */
+.toast{position:fixed;left:50%;bottom:calc(var(--tabbar) + env(safe-area-inset-bottom) + 14px);transform:translateX(-50%);background:var(--ink);color:#fff;border-radius:999px;padding:10px 10px 10px 18px;display:flex;align-items:center;gap:12px;z-index:30;max-width:calc(100% - 32px);box-shadow:0 8px 24px rgba(42,34,64,.25)}
+.toast button{background:#fff;color:var(--ink);border:0;border-radius:999px;padding:6px 14px;font-weight:700;cursor:pointer}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media (min-width:480px){.board{grid-template-columns:1fr 1fr}}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <button class="logo" id="logo" aria-label="Now what? Go to home">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M6 28V14a10 10 0 0 1 20 0v14z" fill="#FFD8C2" stroke="#2A2240" stroke-width="2.2" stroke-linejoin="round"/><circle cx="21" cy="20" r="1.8" fill="#2A2240"/></svg>
+      Now what?
+    </button>
+    <button class="pot-chip" id="potChip" aria-label="Furniture pot balance"></button>
+  </header>
+  <main id="main" tabindex="-1"></main>
+</div>
+<div class="tabbar"><nav id="tabs" aria-label="Main"></nav></div>
+<div id="sheetRoot"></div>
+<div id="toastRoot" aria-live="polite"></div>
+
+<script>
+/* ---------- Icons ---------- */
+const I = {
+  rooms:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11h16v6H4z"/><path d="M6 11V8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v3"/><path d="M5 17v2M19 17v2"/></svg>',
+  purchases:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6h.01M4 12h.01M4 18h.01"/></svg>',
+  budget:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 9a7 6 0 0 1 13 0v0h1.5a1.5 1.5 0 0 1 0 3H18c-.4 2-1.6 3.6-3.3 4.5L15 19h-3l-.3-1.5a8 8 0 0 1-1.4 0L10 19H7l.4-2.7C5.4 15.1 5 13 5 11z"/><path d="M12 5.5V3.5"/></svg>',
+  fixes:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.2L4 16.8V20h3.2l5.3-5.3a4 4 0 0 0 5.2-5.4l-2.5 2.5-2.3-.5-.5-2.3z"/></svg>',
+  back:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>',
+  up:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg>',
+  down:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>',
+  close:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+  plus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
+  share:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3M8 7l4-4 4 4"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>',
+  sofa:'<svg viewBox="0 0 24 24" fill="none" stroke="#2A2240" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11h16v6H4z"/><path d="M6 11V8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v3"/><path d="M5 17v2M19 17v2"/></svg>'
+};
+
+/* ---------- Data ---------- */
+const ROOMS = [
+  {id:'lounge',name:'Lounge'},{id:'kitchen',name:'Kitchen'},{id:'bedroom',name:'Bedroom'},
+  {id:'bathroom',name:'Bathroom'},{id:'hallway',name:'Hallway'},{id:'outside',name:'Outside'}
+];
+const TEMPLATE = [
+  ['Property','Mortgage',975,'Average first-time buyer payment, January 2026'],
+  ['Property','Service charge',200,'Average for flats, about £2,400 a year'],
+  ['Property','Life or income protection',20,'Rough guide'],
+  ['Utilities and tax','Electricity',56,'Price cap, Oct to Dec 2026, low use'],
+  ['Utilities and tax','Gas',59,'Price cap, Oct to Dec 2026, low use'],
+  ['Utilities and tax','Water',53,'Average bill for 2026/27. You can’t switch supplier.'],
+  ['Utilities and tax','Council tax',177,'Band C average. Living alone? Ask for 25% off.'],
+  ['Utilities and tax','Contents insurance',6,'Average contents-only policy'],
+  ['Utilities and tax','Broadband',30,'Rough guide'],
+  ['Utilities and tax','TV licence',15,'£180 a year'],
+  ['Essentials','Food and household',250,'Rough guide for one person'],
+  ['Essentials','Travel',150,'Rough guide'],
+  ['Essentials','Phone',15,'Rough guide'],
+  ['Lifestyle','Subscriptions',25,'Rough guide'],
+  ['Lifestyle','Gym',35,'Rough guide'],
+  ['Lifestyle','Eating out and treats',100,'Rough guide']
+];
+const TEMPLATE_SOURCES = [
+  ['Mortgage: typical first-time buyer payment, Rightmove, Jan 2026','https://www.mortgagesolutions.co.uk/news/2026/02/19/average-monthly-mortgage-payment-119-cheaper-in-january-rightmove-finds/'],
+  ['Service charge: average for flats, Hamptons, 2025','https://www.propertyreporter.co.uk/service-charges-top-200-a-month-for-the-first-time.html'],
+  ['Energy: Ofgem price cap rates, Oct to Dec 2026 (Uswitch)','https://www.uswitch.com/gas-electricity/news/october-energy-price-cap-to-increase-by-four-percent/'],
+  ['Water: Water UK average, 2026/27','https://moneytothemasses.com/news/water-bill-increases-for-2026-confirmed-full-details'],
+  ['Council tax: England Band D average 2026/27, Band C worked out from it','https://www.expressandstar.com/uk-news/2026/03/25/households-in-poor-areas-face-some-of-highest-council-tax-bills-figures-show'],
+  ['Contents insurance: median premium, MoneySuperMarket','https://www.moneysupermarket.com/home-insurance/cost-of-home-insurance/'],
+  ['TV licence: £180 a year from April 2026','https://www.itv.com/news/2026-02-06/tv-licence-fee-will-rise-to-180-a-year-in-april']
+];
+const GROUPS = ['Property','Utilities and tax','Essentials','Lifestyle','Other'];
+
+function demoState(){
+  return {
+    v:1,
+    items:[
+      {id:'i1',room:'hallway',name:'Uganda marble wall shelf',price:53.95,link:'https://www.sklum.com/uk/buy-floating-shelves/226588-uganda-marble-60x15-wall-shelf.html',img:'https://cdn.sklum.com/uk/5145868-large_default/uganda-marble-60x15-wall-shelf.jpg',status:'want',rank:1},
+      {id:'i2',room:'hallway',name:'Kousaido glass incense holder',price:25,link:'https://sensingco.com/products/kousaido-glass-japanese-incense-holder-clear',img:'',status:'want',rank:2},
+      {id:'i3',room:'hallway',name:'Reims arched wooden mirror',price:289,link:'https://www.williamwoodmirrors.co.uk/products/reims-dark-wood-arched-panel-wooden-mirror-120cm-x-80cm',img:'https://scdn.speedsize.com/19bba31a-6c36-4510-aa4c-90e87768362d/https://www.williamwoodmirrors.co.uk/cdn/shop/files/WWECOMWEBRES3_0028_WWECOM20.02.264737.jpg?v=1772018006',status:'want',rank:3},
+      {id:'i4',room:'bedroom',name:'Teddy pouffe with storage',price:179,link:'https://www.westwing.co.uk/teddy-stool-benji-with-storage-space-en-24wes13848.html',img:'https://cdn.shopify.com/s/files/1/0613/3107/9307/files/DEQ24WES13848-221881_25b448baf227e4dbd5895d2047abda69_dtl_1.jpg?v=1770806869',status:'want',rank:4},
+      {id:'i5',room:'bedroom',name:'Elliptical amber glass pendant',price:215,link:'https://www.coxandcox.co.uk/elliptical-amber-glass-pendant/',img:'',status:'want',rank:5},
+      {id:'i6',room:'bedroom',name:'Good Morning / Good Night print',price:7.47,link:'https://www.etsy.com/uk/listing/4445322307/good-morningnight-digital-print-berry',img:'https://i.etsystatic.com/45033803/c/2182/2182/239/206/il/bb284a/8180045698/il_680x540.8180045698_b2s6.jpg',status:'gift',rank:6}
+    ],
+    pot:{balance:100,monthly:200,history:[{d:Date.now(),amt:100,note:'Starting balance'}]},
+    income:0,
+    bills:[],
+    fixes:[
+      {id:'f1',room:'hallway',text:'Chip in the wall by the front door',type:'Fix',status:'Reported',ref:'MC-2041',notes:''},
+      {id:'f2',room:'bathroom',text:'Leaky bathroom tap',type:'Fix',status:'To do',ref:'',notes:''},
+      {id:'f3',room:'bedroom',text:'Paint the feature wall',type:'Decorate',status:'To do',ref:'',notes:''},
+      {id:'f4',room:'general',text:'Bleed the radiators',type:'Fix',status:'Done',ref:'',notes:''}
+    ]
+  };
+}
+
+const KEY = 'nowwhat:v1';
+let S;
+try { S = JSON.parse(localStorage.getItem(KEY)) || demoState(); } catch(e){ S = demoState(); }
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e){ toast('Couldn’t save on this device. Try a smaller photo.'); } }
+
+/* ---------- Helpers ---------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const gbp = n => '£' + (Math.round(n*100)/100).toLocaleString('en-GB',{minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits:2});
+const uid = () => Math.random().toString(36).slice(2,9);
+const roomName = id => id === 'general' ? 'General' : (ROOMS.find(r => r.id === id)||{name:'Room'}).name;
+const monthName = n => { const d = new Date(); d.setDate(1); d.setMonth(d.getMonth()+n); return d.toLocaleString('en-GB',{month:'short'}); };
+const plural = (n, w) => n + ' ' + w + (n === 1 ? '' : 's');
+const ROOM_TINT = {lounge:'#FFD8C2',kitchen:'#C9EDD8',bedroom:'#E5DBFA',bathroom:'#CFE3F8',hallway:'#FFEDA8',outside:'#C9EDD8'};
+
+function wants(){ return S.items.filter(i => i.status === 'want').sort((a,b) => a.rank - b.rank); }
+function plan(){
+  const out = {}; let cum = 0;
+  for (const it of wants()){
+    cum += it.price;
+    let m = cum <= S.pot.balance ? 0 : (S.pot.monthly > 0 ? Math.ceil((cum - S.pot.balance) / S.pot.monthly) : null);
+    out[it.id] = m;
+  }
+  return out;
+}
+function readyBadge(it, p){
+  if (it.status === 'gift') return '<span class="badge b-gift">On my gift list</span>';
+  if (it.status === 'bought') return '<span class="badge b-bought">Bought</span>';
+  const m = p[it.id];
+  if (m === 0) return '<span class="badge b-now">Ready now</span>';
+  if (m == null) return '<span class="badge b-later">Set a monthly top-up</span>';
+  return `<span class="badge b-later">Ready in ${plural(m,'month')} (${monthName(m)})</span>`;
+}
+function photo(it, cls='ph'){
+  const tint = ROOM_TINT[it.room] || '#FFD8C2';
+  const ph = `<div class="${cls}" style="background:${tint}">${I.sofa}</div>`;
+  return it.img ? `<img src="${esc(it.img)}" alt="" loading="lazy" referrerpolicy="no-referrer" data-cls="${cls}" data-tint="${tint}" onerror="imgFail(this)">` : ph;
+}
+function imgFail(el){
+  const d = document.createElement('div'); d.className = el.dataset.cls; d.style.background = el.dataset.tint; d.innerHTML = I.sofa; el.replaceWith(d);
+}
+
+/* ---------- Navigation ---------- */
+const TABS = [
+  {id:'rooms',label:'Rooms',tint:'var(--peach)'},
+  {id:'purchases',label:'Purchases',tint:'var(--mint)'},
+  {id:'budget',label:'Budget',tint:'var(--butter)'},
+  {id:'fixes',label:'Fixes',tint:'var(--sky)'}
+];
+let view = {name:'home'};
+let purchasesTab = 'buy';
+let giftMax = '';
+let fixFilter = 'All';
+let homeIdx = 0;
+
+function go(name, extra={}){ view = {name, ...extra}; render(); window.scrollTo(0,0); $('#main').focus({preventScroll:true}); }
+
+function renderTabs(){
+  const active = view.name === 'room' ? 'rooms' : view.name;
+  $('#tabs').innerHTML = TABS.map(t => `<button class="tab" style="--tc:${t.tint}" data-tab="${t.id}" ${active===t.id?'aria-current="page"':''}>${I[t.id]}<span>${t.label}</span></button>`).join('');
+  $('#tabs').querySelectorAll('[data-tab]').forEach(b => b.onclick = () => go(b.dataset.tab));
+  $('#potChip').textContent = 'Pot ' + gbp(S.pot.balance);
+}
+
+function render(){
+  renderTabs();
+  const v = view.name;
+  const html = v === 'home' ? viewHome() : v === 'rooms' ? viewRooms() : v === 'room' ? viewRoom(view.id) :
+               v === 'purchases' ? viewPurchases() : v === 'budget' ? viewBudget() : viewFixes();
+  $('#main').innerHTML = html;
+  bind();
+}
+
+/* ---------- Home ---------- */
+const NEXT = [
+  {title:'Make it home', desc:'Plan each room and see when you can afford every piece.', cta:'Start with your rooms', to:'rooms', door:'var(--peach)'},
+  {title:'Sort my costs', desc:'Know what’s coming in, what’s going out and what’s left.', cta:'Sort my costs', to:'budget', door:'var(--butter)'},
+  {title:'Fix it up', desc:'Keep every chip, leak and paint job in one list.', cta:'See my fixes', to:'fixes', door:'var(--sky)'},
+  {title:'Find the cheapest providers', desc:'Coming soon. We’ll help you spot bills you’re paying too much for.', cta:'Coming soon', to:null, door:'var(--lilac)'}
+];
+function viewHome(){
+  const n = NEXT[homeIdx];
+  return `<section class="home" aria-labelledby="hi">
+    <div class="door" style="--door:${n.door}">
+      <span class="knob" aria-hidden="true"></span>
+      <p class="youre-in">You’re in.</p>
+      <h1 id="hi" class="now-what">Now what?</h1>
+      <p class="next-title" aria-live="polite">${n.title}</p>
+      <p class="next-desc">${n.desc}</p>
+      <button class="btn" data-act="home-go" ${n.to?'':'disabled'}>${n.cta}</button>
+    </div>
+    <button class="switch-link" data-act="home-next">Change up what’s next for you</button>
+    <div class="home-foot small muted">
+      <p style="margin:0 0 6px">Everything you add stays on this phone. Nothing is sent anywhere.</p>
+      <button class="text-btn" data-act="reset">Start again with the demo</button>
+    </div>
+  </section>`;
+}
+
+/* ---------- Rooms ---------- */
+function viewRooms(){
+  const tiles = ROOMS.map(r => {
+    const its = S.items.filter(i => i.room === r.id && i.status !== 'bought');
+    const imgs = its.filter(i => i.img).slice(0,4);
+    const total = its.reduce((a,i) => a + i.price, 0);
+    const col = imgs.length ? `<div class="collage n${imgs.length}" style="background:${ROOM_TINT[r.id]}">${imgs.map(i => photo(i)).join('')}</div>`
+      : `<div class="collage" style="background:${ROOM_TINT[r.id]}"><div class="empty">${I.sofa}</div></div>`;
+    return `<button class="room-tile" data-room="${r.id}">${col}<div class="meta"><strong>${r.name}</strong><span class="small muted">${its.length ? plural(its.length,'item') + ' · ' + gbp(total) : 'Nothing yet'}</span></div></button>`;
+  }).join('');
+  return `<div class="page-head"><div><h1>Make it home</h1><p class="lead">Save what you love, room by room. No more lost tabs.</p></div></div>
+    <div class="room-grid">${tiles}</div>
+    <p style="margin-top:20px"><button class="btn block" data-act="add-item">${I.plus.replace('<svg','<svg width="20" height="20"')} Add something you love</button></p>`;
+}
+function viewRoom(id){
+  const p = plan();
+  const its = S.items.filter(i => i.room === id && i.status !== 'bought').sort((a,b)=>a.rank-b.rank);
+  const total = its.reduce((a,i)=>a+i.price,0);
+  const cards = its.map(it => `<article class="card">
+      <button class="open" data-item="${it.id}" aria-label="${esc(it.name)}, ${gbp(it.price)}">
+        <div class="photo">${photo(it)}</div>
+        <div class="body"><div class="name">${esc(it.name)}</div><div class="price">${gbp(it.price)}</div>${readyBadge(it,p)}</div>
+      </button>
+      ${it.link ? `<a class="shop" href="${esc(it.link)}" target="_blank" rel="noopener">Open in shop</a>` : ''}
+    </article>`).join('');
+  return `<button class="back" data-act="to-rooms">${I.back} All rooms</button>
+    <div class="page-head"><div><h1>${roomName(id)}</h1><p class="lead">${its.length ? plural(its.length,'item') + ' · ' + gbp(total) + ' in total' : 'Nothing here yet. Add the first thing you’d love for this room.'}</p></div></div>
+    <button class="btn block" data-act="add-item" data-room-pre="${id}">${I.plus.replace('<svg','<svg width="20" height="20"')} Add to ${roomName(id).toLowerCase()}</button>
+    ${its.length ? `<div class="board">${cards}</div>` : ''}`;
+}
+
+/* ---------- Purchases ---------- */
+function viewPurchases(){
+  const p = plan();
+  const seg = `<div class="seg" role="tablist">
+    <button role="tab" aria-selected="${purchasesTab==='buy'}" data-seg="buy">To buy</button>
+    <button role="tab" aria-selected="${purchasesTab==='gift'}" data-seg="gift">Gift list</button>
+    <button role="tab" aria-selected="${purchasesTab==='bought'}" data-seg="bought">Bought</button></div>`;
+  let body = '';
+  if (purchasesTab === 'buy'){
+    const ws = wants();
+    body = ws.length ? `<p class="small muted" style="margin:0 0 10px">Your pot pays for things in this order. Move items up or down to change it.</p><ol class="plist">${ws.map((it,i) => `
+      <li class="prow">
+        <span class="rank" aria-label="Priority ${i+1}">${i+1}</span>
+        <div class="thumb">${photo(it,'phs')}</div>
+        <button class="info" data-item="${it.id}"><div class="n">${esc(it.name)}</div><div class="small muted">${roomName(it.room)} · <strong style="color:var(--ink)">${gbp(it.price)}</strong></div>${readyBadge(it,p)}</button>
+        <div class="moves"><button class="icon-btn" data-up="${it.id}" aria-label="Move up" ${i===0?'disabled':''}>${I.up}</button><button class="icon-btn" data-down="${it.id}" aria-label="Move down" ${i===ws.length-1?'disabled':''}>${I.down}</button></div>
+      </li>`).join('')}</ol>`
+      : `<div class="empty-state"><p>Nothing on your list yet.</p><button class="btn" data-act="add-item">Add something you love</button></div>`;
+  } else if (purchasesTab === 'gift'){
+    const max = parseFloat(giftMax);
+    const gs = S.items.filter(i => i.status === 'gift' && (!max || i.price <= max));
+    body = `<p class="small muted" style="margin:0 0 10px">For when someone asks what you’d like. Share it, or screenshot this page.</p>
+      <div class="filter"><label for="giftMax">Show gifts under</label><div class="money"><input id="giftMax" type="number" inputmode="decimal" min="0" placeholder="Any" value="${esc(giftMax)}"></div></div>
+      ${gs.length ? `<ul class="plist">${gs.map(it => `<li class="prow gift"><div class="thumb">${photo(it,'phs')}</div>
+        <button class="info" data-item="${it.id}"><div class="n">${esc(it.name)}</div><div class="small"><strong>${gbp(it.price)}</strong> · ${roomName(it.room)}</div></button>
+        ${it.link ? `<a class="small" href="${esc(it.link)}" target="_blank" rel="noopener">Shop</a>` : '<span></span>'}</li>`).join('')}</ul>
+        <p style="margin-top:16px"><button class="btn block" data-act="share-gifts">${I.share.replace('<svg','<svg width="20" height="20"')} Share ${max ? 'these gifts' : 'my gift list'}</button></p>`
+      : `<div class="empty-state"><p>${max ? 'No gifts under ' + gbp(max) + ' yet.' : 'Your gift list is empty. Open any item and choose “Add to my gift list”.'}</p></div>`}`;
+  } else {
+    const bs = S.items.filter(i => i.status === 'bought');
+    body = bs.length ? `<ul class="plist">${bs.map(it => `<li class="prow gift"><div class="thumb">${photo(it,'phs')}</div><button class="info" data-item="${it.id}"><div class="n">${esc(it.name)}</div><div class="small muted">Paid ${gbp(it.paid ?? it.price)}</div></button><span></span></li>`).join('')}</ul>`
+      : `<div class="empty-state"><p>Nothing bought yet. When you buy something, mark it as bought and it’ll come out of your pot.</p></div>`;
+  }
+  return `<div class="page-head"><div><h1>Purchases</h1><p class="lead">What you want, in the order you want it.</p></div></div>
+    <div class="pot-card"><div><div class="small">Furniture pot</div><div class="big">${gbp(S.pot.balance)}</div><div class="small">${S.pot.monthly ? '+ ' + gbp(S.pot.monthly) + ' a month' : 'No monthly top-up yet'}</div></div><button class="btn secondary" data-act="to-budget">Manage pot</button></div>
+    ${seg}${body}`;
+}
+
+/* ---------- Budget ---------- */
+function viewBudget(){
+  const billsTotal = S.bills.reduce((a,b)=>a+(+b.amount||0),0);
+  const left = (+S.income||0) - billsTotal;
+  const afterPot = left - (+S.pot.monthly||0);
+  const actual = S.bills.filter(b=>b.actual).length;
+  const groups = GROUPS.map(g => {
+    const bs = S.bills.filter(b => b.group === g); if (!bs.length) return '';
+    const t = bs.reduce((a,b)=>a+(+b.amount||0),0);
+    return `<section class="group"><div class="group-head"><h3>${g}</h3><strong>${gbp(t)}</strong></div>
+      ${bs.map(b => `<div class="bill"><div><div class="bname">${esc(b.name)}</div>${b.note ? `<div class="bnote">${esc(b.note)}</div>` : ''}</div>
+        <div class="money"><label class="sr-only" for="b-${b.id}">${esc(b.name)} per month</label><input id="b-${b.id}" type="number" inputmode="decimal" min="0" value="${b.amount ?? ''}" placeholder="Add yours" data-bill="${b.id}"></div>
+        <button class="tag ${b.actual?'act':'est'}" data-tog="${b.id}" aria-label="${esc(b.name)}: ${b.actual?'actual, tap to mark as estimate':'estimate, tap to mark as actual'}">${b.actual?'Actual':'Estimate'}</button></div>`).join('')}</section>`;
+  }).join('');
+  return `<div class="page-head"><div><h1>Sort my costs</h1><p class="lead">What comes in, what goes out, and what’s left for your home.</p></div></div>
+    <div class="left-card">
+      <div class="small muted">What’s left each month</div>
+      <div class="big" style="color:${left<0?'#B3261E':'var(--ink)'}">${S.income ? gbp(left) : '—'}</div>
+      <label class="field" style="margin:12px 0 4px"><span>Your monthly take-home pay</span><div class="money"><input id="income" type="number" inputmode="decimal" min="0" placeholder="e.g. 4200" value="${S.income||''}"></div></label>
+      ${S.income ? `<div class="sum small"><span>Bills</span><span>− ${gbp(billsTotal)}</span></div><div class="sum small"><span>Into your furniture pot</span><span>− ${gbp(S.pot.monthly||0)}</span></div><div class="sum"><strong>Free to spend</strong><strong>${gbp(afterPot)}</strong></div>` : ''}
+    </div>
+    <div class="potbox">
+      <div class="small">Furniture pot</div>
+      <div class="big">${gbp(S.pot.balance)}</div>
+      <label class="field"><span>How much can you put in each month?</span><div class="money"><input id="monthly" type="number" inputmode="decimal" min="0" value="${S.pot.monthly||''}" placeholder="e.g. 200"></div><div class="hint">You choose. Nothing moves automatically.</div></label>
+      <div class="btn-row"><button class="btn" data-act="topup" ${S.pot.monthly?'':'disabled'}>Add ${gbp(S.pot.monthly||0)} to my pot</button><button class="btn quiet" data-act="edit-balance">Change balance</button></div>
+    </div>
+    <div class="page-head" style="margin-top:24px"><div><h2>Your bills</h2>${S.bills.length ? `<div class="progress" aria-hidden="true"><i style="width:${Math.round(actual/S.bills.length*100)}%"></i></div><p class="small muted" style="margin:0">${actual} of ${S.bills.length} costs confirmed. Tap “Estimate” once you know the real amount.</p>` : ''}</div></div>
+    ${S.bills.some(b=>b.note) ? '<p class="small muted" style="margin:8px 0 0">Typical costs for a two-bedroom flat in England, checked October 2026. A rough guide, not a quote.</p>' : ''}${S.bills.length ? groups + `<p style="margin-top:18px" class="btn-row"><button class="btn secondary" data-act="add-bill">${I.plus.replace('<svg','<svg width="20" height="20"')} Add a bill</button><button class="btn quiet" data-act="clear-bills">Clear bills</button></p>
+      <details style="margin-top:16px" class="small"><summary style="cursor:pointer;font-weight:700">Where the template figures come from</summary><p class="muted">Typical UK figures for a two-bedroom flat, checked October 2026. They’re a rough guide, not quotes. Your own bills will vary.</p><ul style="padding-left:18px;margin:0">${TEMPLATE_SOURCES.map(([t,u]) => `<li><a href="${u}" target="_blank" rel="noopener">${t}</a></li>`).join('')}</ul></details>`
+      : `<div class="empty-state"><p>Start with typical UK costs for a two-bedroom flat, then change them to yours. Or add your own from scratch.</p><div class="btn-row" style="justify-content:center"><button class="btn" data-act="template">Use the template</button><button class="btn secondary" data-act="add-bill">Add a bill</button></div></div>`}`;
+}
+
+/* ---------- Fixes ---------- */
+function viewFixes(){
+  const fs = S.fixes.filter(f => fixFilter === 'All' || f.type === fixFilter);
+  const done = S.fixes.filter(f => f.status === 'Done').length;
+  const order = [...ROOMS.map(r=>r.id),'general'];
+  const groups = order.map(rid => {
+    const js = fs.filter(f => f.room === rid); if (!js.length) return '';
+    return `<section class="group"><div class="group-head"><h3>${roomName(rid)}</h3><span class="small muted">${js.filter(j=>j.status==='Done').length} of ${js.length} done</span></div>
+      ${js.map(j => `<div class="job ${j.status==='Done'?'done':''}"><div><button class="t" data-fix="${j.id}">${esc(j.text)}</button><div class="k">${j.type}${j.ref?' · Ref '+esc(j.ref):''}</div></div>
+        <button class="status ${j.status==='To do'?'s-todo':j.status==='Reported'?'s-reported':'s-done'}" data-cycle="${j.id}" aria-label="Status: ${j.status}. Tap to change">${j.status}</button></div>`).join('')}</section>`;
+  }).join('');
+  return `<div class="page-head"><div><h1>Fix it up</h1><p class="lead">Chips, leaks and paint jobs, all in one list. ${S.fixes.length ? done + ' of ' + S.fixes.length + ' done.' : ''}</p></div></div>
+    <button class="btn block" data-act="add-fix">${I.plus.replace('<svg','<svg width="20" height="20"')} Add a job</button>
+    <div class="chips" role="group" aria-label="Show">${['All','Fix','Decorate'].map(c => `<button class="chip" data-ff="${c}" aria-pressed="${fixFilter===c}">${c}</button>`).join('')}</div>
+    ${groups || `<div class="empty-state" style="margin-top:12px"><p>Nothing here yet.</p></div>`}
+    ${S.fixes.some(f=>f.type==='Fix'&&f.status!=='Done') ? `<p style="margin-top:20px"><button class="btn secondary block" data-act="share-fixes">${I.share.replace('<svg','<svg width="20" height="20"')} Share outstanding fixes</button></p><p class="small muted">Handy for emailing your management company or developer.</p>` : ''}`;
+}
+
+/* ---------- Sheets ---------- */
+function openSheet(html, onBind){
+  $('#sheetRoot').innerHTML = `<div class="scrim" data-scrim><div class="sheet" role="dialog" aria-modal="true"><div class="grab" aria-hidden="true"></div>${html}</div></div>`;
+  const scrim = $('[data-scrim]');
+  scrim.addEventListener('click', e => { if (e.target === scrim) closeSheet(); });
+  scrim.querySelectorAll('[data-close]').forEach(b => b.onclick = closeSheet);
+  document.addEventListener('keydown', escClose);
+  const f = scrim.querySelector('input,button:not([data-close]),select'); if (f) f.focus();
+  onBind && onBind(scrim);
+}
+function escClose(e){ if (e.key === 'Escape') closeSheet(); }
+function closeSheet(){ $('#sheetRoot').innerHTML = ''; document.removeEventListener('keydown', escClose); }
+const sheetHead = t => `<div class="sheet-head"><h2>${t}</h2><button class="icon-btn" data-close aria-label="Close">${I.close}</button></div>`;
+
+function itemSheet(id){
+  const it = S.items.find(i => i.id === id); if (!it) return;
+  const p = plan();
+  const actions = it.status === 'want' ? `
+      <button class="btn block" data-a="ways">Find me a way to get this now</button>
+      <button class="btn secondary block" data-a="buy">I’ve bought this</button>`
+    : it.status === 'gift' ? `<button class="btn secondary block" data-a="unwish">Move back to my list</button><button class="btn secondary block" data-a="buy">I’ve bought this</button>`
+    : `<button class="btn secondary block" data-a="unbuy">Not bought after all</button>`;
+  openSheet(`${sheetHead(esc(it.name))}
+    <div class="hero-img">${photo(it)}</div>
+    <p style="margin:0"><span style="font-family:var(--display);font-weight:800;font-size:28px">${gbp(it.price)}</span> <span class="muted">· ${roomName(it.room)}</span></p>
+    <p style="margin:4px 0 16px">${readyBadge(it,p)}</p>
+    <div style="display:grid;gap:10px">${actions}
+      ${it.link ? `<a class="btn quiet block" href="${esc(it.link)}" target="_blank" rel="noopener">Open in shop</a>` : ''}
+      <div class="btn-row"><button class="btn quiet" style="flex:1" data-a="edit">Edit</button><button class="btn quiet" style="flex:1" data-a="remove">Remove</button></div>
+    </div>`, sc => {
+      sc.querySelectorAll('[data-a]').forEach(b => b.onclick = () => {
+        const a = b.dataset.a;
+        if (a === 'ways') waysSheet(id);
+        if (a === 'buy') buySheet(id);
+        if (a === 'unwish'){ it.status = 'want'; it.rank = Math.max(0,...S.items.map(i=>i.rank)) + 1; save(); closeSheet(); render(); toast('Back on your list'); }
+        if (a === 'unbuy'){ S.pot.balance += (it.paid ?? it.price); it.status = 'want'; delete it.paid; save(); closeSheet(); render(); toast('Moved back to your list. Pot refunded.'); }
+        if (a === 'edit') itemForm(id);
+        if (a === 'remove'){ const snap = JSON.stringify(S); S.items = S.items.filter(i => i.id !== id); save(); closeSheet(); render(); toast('Removed', () => { S = JSON.parse(snap); save(); render(); }); }
+      });
+  });
+}
+
+function waysSheet(id){
+  const it = S.items.find(i => i.id === id);
+  const def = S.pot.monthly ? Math.min(12, Math.max(1, Math.ceil(it.price / S.pot.monthly))) : 3;
+  openSheet(`${sheetHead('Ways to pay')}
+    <p class="muted" style="margin-top:-6px"><strong style="color:var(--ink)">${esc(it.name)}, ${gbp(it.price)}.</strong> Here are options that won’t cost you interest.</p>
+    <div class="way" style="background:var(--mint);box-shadow:none">
+      <h3>Save for it</h3>
+      <p class="result" id="saveRes"></p>
+      <label for="months" class="small">How many months?</label>
+      <input id="months" type="range" min="1" max="12" value="${def}">
+      <p class="small" style="margin:6px 0 0">Your pot gets ${gbp(S.pot.monthly||0)} a month now. Change it in Budget.</p>
+    </div>
+    <div class="way">
+      <h3>Use a 0% credit card</h3>
+      <p>Some cards charge no interest on purchases for a set time. Your own bank may offer one, so check there first.</p>
+      <p><strong>The catch:</strong> once the 0% period ends, interest starts. Plan to pay it off before then, and always make at least the minimum payment.</p>
+    </div>
+    <div class="way">
+      <h3>Add it to your gift list</h3>
+      <p>Birthday or housewarming coming up? Friends and family can pick it from your list.</p>
+      <button class="btn secondary" data-a="gift">Add to my gift list</button>
+    </div>
+    <p class="small muted">This is general information, not advice. For free, impartial help, visit <a href="https://www.moneyhelper.org.uk" target="_blank" rel="noopener">MoneyHelper</a>.</p>`, sc => {
+      const r = sc.querySelector('#months'), out = sc.querySelector('#saveRes');
+      const upd = () => { const m = +r.value; out.textContent = `Save ${gbp(Math.ceil(it.price / m))} a month and it’s yours in ${plural(m,'month')}.`; };
+      r.oninput = upd; upd();
+      sc.querySelector('[data-a="gift"]').onclick = () => { it.status = 'gift'; save(); closeSheet(); render(); toast('Added to your gift list'); };
+  });
+}
+
+function buySheet(id){
+  const it = S.items.find(i => i.id === id);
+  const fromPot = it.status === 'want';
+  openSheet(`${sheetHead('Nice one!')}
+    <p style="margin-top:-6px">How much did you pay for the ${esc(it.name)}?</p>
+    <label class="field"><span>Price paid</span><div class="money"><input id="paid" type="number" inputmode="decimal" min="0" step="0.01" value="${it.price}"></div></label>
+    <label class="field" style="display:flex;gap:10px;align-items:center"><input id="fromPot" type="checkbox" ${fromPot?'checked':''} style="width:22px;height:22px;min-height:0"> <span style="margin:0">Take it out of my furniture pot (${gbp(S.pot.balance)})</span></label>
+    <button class="btn block" data-a="ok">Mark as bought</button>`, sc => {
+      sc.querySelector('[data-a="ok"]').onclick = () => {
+        const snap = JSON.stringify(S);
+        const paid = Math.max(0, parseFloat(sc.querySelector('#paid').value) || 0);
+        it.paid = paid; it.status = 'bought';
+        if (sc.querySelector('#fromPot').checked){ S.pot.balance = Math.round((S.pot.balance - paid)*100)/100; S.pot.history.unshift({d:Date.now(),amt:-paid,note:it.name}); }
+        save(); closeSheet(); render(); toast('Marked as bought', () => { S = JSON.parse(snap); save(); render(); });
+      };
+  });
+}
+
+function itemForm(id, preRoom){
+  const it = id ? S.items.find(i => i.id === id) : {room: preRoom || 'lounge', name:'', price:'', link:'', img:''};
+  let img = it.img || '';
+  openSheet(`${sheetHead(id ? 'Edit item' : 'Add something you love')}
+    <label class="field"><span>Link to the product</span><input id="f-link" type="url" inputmode="url" placeholder="Paste the link from your browser" value="${esc(it.link)}"></label>
+    <label class="field"><span>What is it?</span><input id="f-name" type="text" placeholder="e.g. Oak bedside table" value="${esc(it.name)}"></label>
+    <label class="field"><span>Price</span><div class="money"><input id="f-price" type="number" inputmode="decimal" min="0" step="0.01" value="${it.price}"></div></label>
+    <label class="field"><span>Room</span><select id="f-room">${ROOMS.map(r => `<option value="${r.id}" ${it.room===r.id?'selected':''}>${r.name}</option>`).join('')}</select></label>
+    <label class="field"><span>Photo</span><input id="f-img" type="file" accept="image/*"><div class="hint">A screenshot from the shop works well.</div></label>
+    <div id="f-prev" style="max-width:120px;border-radius:12px;overflow:hidden;margin:-4px 0 14px">${img ? `<img src="${esc(img)}" alt="Chosen photo">` : ''}</div>
+    <p id="f-err" class="small" style="color:#B3261E;margin:0 0 10px" role="alert"></p>
+    <button class="btn block" data-a="save">${id ? 'Save changes' : 'Add to ' + 'my list'}</button>`, sc => {
+      sc.querySelector('#f-img').onchange = e => {
+        const file = e.target.files[0]; if (!file) return;
+        const rd = new FileReader();
+        rd.onload = () => { const im = new Image(); im.onload = () => {
+          const max = 640, s = Math.min(1, max / Math.max(im.width, im.height));
+          const c = document.createElement('canvas'); c.width = im.width*s; c.height = im.height*s;
+          c.getContext('2d').drawImage(im,0,0,c.width,c.height); img = c.toDataURL('image/jpeg',.78);
+          sc.querySelector('#f-prev').innerHTML = `<img src="${img}" alt="Chosen photo">`; }; im.src = rd.result; };
+        rd.readAsDataURL(file);
+      };
+      sc.querySelector('[data-a="save"]').onclick = () => {
+        const name = sc.querySelector('#f-name').value.trim(), price = parseFloat(sc.querySelector('#f-price').value);
+        if (!name){ sc.querySelector('#f-err').textContent = 'Add a name so you know what it is.'; return; }
+        if (!(price >= 0) || isNaN(price)){ sc.querySelector('#f-err').textContent = 'Add a price, even a rough one.'; return; }
+        const data = {name, price, link: sc.querySelector('#f-link').value.trim(), room: sc.querySelector('#f-room').value, img};
+        if (id) Object.assign(it, data);
+        else S.items.push({id:uid(), status:'want', rank: Math.max(0,...S.items.map(i=>i.rank)) + 1, ...data});
+        save(); closeSheet();
+        if (!id) { go('room', {id: data.room}); toast('Added to ' + roomName(data.room).toLowerCase()); } else render();
+      };
+  });
+}
+
+function billForm(){
+  openSheet(`${sheetHead('Add a bill')}
+    <label class="field"><span>What is it?</span><input id="bn" type="text" placeholder="e.g. Window cleaner"></label>
+    <label class="field"><span>Monthly amount</span><div class="money"><input id="ba" type="number" inputmode="decimal" min="0"></div><div class="hint">Paid yearly? Divide it by 12.</div></label>
+    <label class="field"><span>Group</span><select id="bg">${GROUPS.map(g=>`<option>${g}</option>`).join('')}</select></label>
+    <button class="btn block" data-a="ok">Add bill</button>`, sc => {
+      sc.querySelector('[data-a="ok"]').onclick = () => {
+        const n = sc.querySelector('#bn').value.trim(); if (!n) return;
+        S.bills.push({id:uid(), group: sc.querySelector('#bg').value, name:n, amount: parseFloat(sc.querySelector('#ba').value)||0, actual:true});
+        save(); closeSheet(); render();
+      };
+  });
+}
+
+function fixForm(id){
+  const f = id ? S.fixes.find(x => x.id === id) : {text:'',room:'general',type:'Fix',status:'To do',ref:'',notes:''};
+  openSheet(`${sheetHead(id ? 'Edit job' : 'Add a job')}
+    <label class="field"><span>What needs doing?</span><input id="ft" type="text" placeholder="e.g. Leaky kitchen tap" value="${esc(f.text)}"></label>
+    <label class="field"><span>Where?</span><select id="fr">${[...ROOMS,{id:'general',name:'General (whole home)'}].map(r=>`<option value="${r.id}" ${f.room===r.id?'selected':''}>${r.name}</option>`).join('')}</select></label>
+    <div class="field"><span style="display:block;font-weight:700;margin-bottom:6px">Is it a fix or decorating?</span><div class="chips" style="margin:0">${['Fix','Decorate'].map(t=>`<button class="chip" data-type="${t}" aria-pressed="${f.type===t}">${t}</button>`).join('')}</div></div>
+    <label class="field"><span>Reference number (optional)</span><input id="fref" type="text" placeholder="From your management company" value="${esc(f.ref)}"></label>
+    <button class="btn block" data-a="ok">${id ? 'Save changes' : 'Add job'}</button>
+    ${id ? '<p style="text-align:center"><button class="text-btn" data-a="del">Delete this job</button></p>' : ''}`, sc => {
+      let type = f.type;
+      sc.querySelectorAll('[data-type]').forEach(b => b.onclick = () => { type = b.dataset.type; sc.querySelectorAll('[data-type]').forEach(x => x.setAttribute('aria-pressed', x === b)); });
+      sc.querySelector('[data-a="ok"]').onclick = () => {
+        const t = sc.querySelector('#ft').value.trim(); if (!t) return;
+        const d = {text:t, room: sc.querySelector('#fr').value, type, ref: sc.querySelector('#fref').value.trim()};
+        if (id) Object.assign(f, d); else S.fixes.push({id:uid(), status:'To do', notes:'', ...d});
+        save(); closeSheet(); render();
+      };
+      const del = sc.querySelector('[data-a="del"]');
+      if (del) del.onclick = () => { S.fixes = S.fixes.filter(x => x.id !== id); save(); closeSheet(); render(); toast('Job deleted'); };
+  });
+}
+
+/* ---------- Share ---------- */
+async function share(title, text){
+  try {
+    if (navigator.share){ await navigator.share({title, text}); return; }
+  } catch(e){ if (e.name === 'AbortError') return; }
+  try { await navigator.clipboard.writeText(text); toast('Copied. Paste it into a message.'); }
+  catch(e){ openSheet(`${sheetHead('Copy this message')}<textarea style="width:100%;min-height:220px;border-radius:12px;border:1.5px solid var(--line);padding:12px">${esc(text)}</textarea>`); }
+}
+
+/* ---------- Toast ---------- */
+let toastTimer;
+function toast(msg, undo){
+  clearTimeout(toastTimer);
+  $('#toastRoot').innerHTML = `<div class="toast"><span>${esc(msg)}</span>${undo ? '<button>Undo</button>' : ''}</div>`;
+  if (undo) $('#toastRoot button').onclick = () => { undo(); $('#toastRoot').innerHTML = ''; };
+  toastTimer = setTimeout(() => $('#toastRoot').innerHTML = '', undo ? 6000 : 3000);
+}
+
+/* ---------- Events ---------- */
+function bind(){
+  const m = $('#main');
+  m.querySelectorAll('[data-act]').forEach(b => b.onclick = () => {
+    const a = b.dataset.act;
+    if (a === 'home-next'){ homeIdx = (homeIdx + 1) % NEXT.length; render(); $('.switch-link').focus(); }
+    if (a === 'home-go'){ const n = NEXT[homeIdx]; if (n.to) go(n.to); }
+    if (a === 'reset'){ if (confirm('Clear everything and start again with the demo?')){ S = demoState(); save(); homeIdx = 0; render(); toast('Demo restored'); } }
+    if (a === 'add-item') itemForm(null, b.dataset.roomPre);
+    if (a === 'to-rooms') go('rooms');
+    if (a === 'to-budget') go('budget');
+    if (a === 'template'){ S.bills = TEMPLATE.map(([g,n,v,h]) => ({id:uid(), group:g, name:n, amount:v, note:h, actual:false})); save(); render(); toast('Typical costs added. Change them to yours.'); }
+    if (a === 'add-bill') billForm();
+    if (a === 'clear-bills'){ const snap = JSON.stringify(S.bills); S.bills = []; save(); render(); toast('Bills cleared', () => { S.bills = JSON.parse(snap); save(); render(); }); }
+    if (a === 'topup'){ S.pot.balance = Math.round((S.pot.balance + (+S.pot.monthly||0))*100)/100; S.pot.history.unshift({d:Date.now(),amt:+S.pot.monthly,note:'Monthly top-up'}); save(); render(); toast(gbp(S.pot.monthly) + ' added to your pot'); }
+    if (a === 'edit-balance'){ const v = prompt('How much is in your furniture pot right now?', S.pot.balance); if (v !== null && !isNaN(parseFloat(v))){ S.pot.balance = parseFloat(v); save(); render(); } }
+    if (a === 'add-fix') fixForm();
+    if (a === 'share-gifts'){
+      const max = parseFloat(giftMax);
+      const gs = S.items.filter(i => i.status === 'gift' && (!max || i.price <= max));
+      share('My home wishlist', 'My home wishlist 🏡\n\n' + gs.map(i => `• ${i.name} – ${gbp(i.price)}${i.link ? '\n  ' + i.link : ''}`).join('\n') + '\n\nMade with Now what?');
+    }
+    if (a === 'share-fixes'){
+      const open = S.fixes.filter(f => f.type === 'Fix' && f.status !== 'Done');
+      const order = [...ROOMS.map(r=>r.id),'general'];
+      const txt = 'Outstanding fixes\n' + order.map(rid => { const js = open.filter(f => f.room === rid); return js.length ? `\n${roomName(rid)}\n` + js.map(j => `• ${j.text}${j.ref ? ' (ref ' + j.ref + ')' : ''}${j.status === 'Reported' ? ' – already reported' : ''}`).join('\n') : ''; }).join('');
+      share('Outstanding fixes', txt.trim());
+    }
+  });
+  m.querySelectorAll('[data-room]').forEach(b => b.onclick = () => go('room', {id: b.dataset.room}));
+  m.querySelectorAll('[data-item]').forEach(b => b.onclick = () => itemSheet(b.dataset.item));
+  m.querySelectorAll('[data-seg]').forEach(b => b.onclick = () => { purchasesTab = b.dataset.seg; render(); });
+  m.querySelectorAll('[data-up],[data-down]').forEach(b => b.onclick = () => {
+    const ws = wants(), id = b.dataset.up || b.dataset.down, i = ws.findIndex(x => x.id === id), j = b.dataset.up ? i - 1 : i + 1;
+    if (j < 0 || j >= ws.length) return;
+    const r = ws[i].rank; ws[i].rank = ws[j].rank; ws[j].rank = r; save(); render();
+    const again = $(`[data-${b.dataset.up ? 'up' : 'down'}="${id}"]`); if (again && !again.disabled) again.focus();
+  });
+  const gm = $('#giftMax'); if (gm) gm.oninput = () => { giftMax = gm.value; const pos = gm.selectionStart; render(); const g2 = $('#giftMax'); g2.focus(); try{ g2.setSelectionRange(pos,pos);}catch(e){} };
+  const inc = $('#income'); if (inc) inc.onchange = () => { S.income = parseFloat(inc.value) || 0; save(); render(); };
+  const mon = $('#monthly'); if (mon) mon.onchange = () => { S.pot.monthly = parseFloat(mon.value) || 0; save(); render(); };
+  m.querySelectorAll('[data-bill]').forEach(inp => inp.onchange = () => { const b = S.bills.find(x => x.id === inp.dataset.bill); b.amount = inp.value === '' ? null : (parseFloat(inp.value) || 0); save(); render(); });
+  m.querySelectorAll('[data-tog]').forEach(b => b.onclick = () => { const x = S.bills.find(y => y.id === b.dataset.tog); x.actual = !x.actual; save(); render(); });
+  m.querySelectorAll('[data-ff]').forEach(b => b.onclick = () => { fixFilter = b.dataset.ff; render(); });
+  m.querySelectorAll('[data-fix]').forEach(b => b.onclick = () => fixForm(b.dataset.fix));
+  m.querySelectorAll('[data-cycle]').forEach(b => b.onclick = () => {
+    const f = S.fixes.find(x => x.id === b.dataset.cycle); const seq = ['To do','Reported','Done'];
+    f.status = seq[(seq.indexOf(f.status) + 1) % seq.length]; save(); render();
+    const again = $(`[data-cycle="${f.id}"]`); if (again) again.focus();
+  });
+}
+$('#logo').onclick = () => go('home');
+$('#potChip').onclick = () => go('budget');
+render();
+</script>
+</body>
+</html>
